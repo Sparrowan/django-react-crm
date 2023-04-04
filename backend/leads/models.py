@@ -23,3 +23,6 @@ class Lead(models.Model):
 
     def __str__(self):
         return '{} {} {}'.format(self.first_name, self.middle_name,self.last_name)
+    
+    def get_created_by_display(self):
+        return '{}'.format(self.created_by.username)
