@@ -20,7 +20,7 @@ import NextLink from 'next/link';
 
 
 
-export default function SignIn() {
+export default function SignUp() {
   return (
     <Stack
       component={Paper}
