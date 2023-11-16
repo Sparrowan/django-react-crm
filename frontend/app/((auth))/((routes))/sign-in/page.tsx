@@ -16,6 +16,8 @@ import Image from '@/app/components/Image';
 import Stack from '@mui/material/Stack';
 import { Paper } from '@mui/material';
 import NextLink from 'next/link';
+// import { useForm } from 'react-hook-form';
+
 
 
 
@@ -62,10 +64,10 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField

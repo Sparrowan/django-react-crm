@@ -62,10 +62,10 @@ export default function SignUp() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField
@@ -78,9 +78,14 @@ export default function SignUp() {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            id="password"
           />
           <Button
             type="submit"
@@ -91,14 +96,9 @@ export default function SignUp() {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link component={NextLink} href="sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link component={NextLink} href="sign-in" variant="body2">
+                {"Have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>
