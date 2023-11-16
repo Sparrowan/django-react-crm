@@ -16,13 +16,24 @@ import Image from '@/app/components/Image';
 import Stack from '@mui/material/Stack';
 import { Paper } from '@mui/material';
 import NextLink from 'next/link';
-// import { useForm } from 'react-hook-form';
-
-
-
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { validationSchema, ValidationSchema } from '@/app/utils/validation/sign-in-validation';
+import { signInInputs } from '@/app/utils/types';
 
 
 export default function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
+
+  const onSubmit = async (data: signInInputs) => {
+    console.log(data)
+  };
   return (
     <Stack
       component={Paper}
@@ -54,7 +65,7 @@ export default function SignIn() {
           padding: 5,
         }}
       >
-        <Box component="form" onSubmit={() => { }} noValidate
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate
           sx={{
             maxHeight: '100%',
             maxWidth: '100%'
@@ -66,19 +77,23 @@ export default function SignIn() {
             fullWidth
             id="username"
             label="Username"
-            name="username"
             autoComplete="username"
             autoFocus
+            error={!!errors['username']}
+            helperText={errors['username'] ? errors['username'].message : ''}
+            {...register('username')}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            error={!!errors['password']}
+            helperText={errors['password'] ? errors['password'].message : ''}
+            {...register('password')}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
