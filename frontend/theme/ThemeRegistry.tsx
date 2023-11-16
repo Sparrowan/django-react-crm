@@ -20,7 +20,7 @@ const themeOptions: ThemeOptions = {
   palette: {
     background: {
       // pink
-      default: "#f8bbd0",
+      default: "rgb(238, 242, 246)",
     },
     primary: {
       main: "#1976d2",
