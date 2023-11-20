@@ -20,6 +20,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema, ValidationSchema } from '@/app/utils/validation/sign-in-validation';
 import { signInInputs } from '@/app/utils/types';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hook'
+import { login } from '@/app/redux/apiCalls'
 
 
 export default function SignIn() {
@@ -30,9 +32,9 @@ export default function SignIn() {
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
-
+  const dispatch = useAppDispatch()
   const onSubmit = async (data: signInInputs) => {
-    console.log(data)
+    login(dispatch, data);
   };
   return (
     <Stack

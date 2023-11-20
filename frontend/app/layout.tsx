@@ -1,6 +1,8 @@
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Providers from '@/app/components/Providers';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeRegistry>
-        <body className={inter.className}>{children}</body>
-      </ThemeRegistry>
+      <Providers>
+        <ThemeRegistry>
+          <body className={inter.className}>{children}</body>
+        </ThemeRegistry>
+      </Providers>
     </html>
   );
 }

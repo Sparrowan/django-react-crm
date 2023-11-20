@@ -1,32 +1,49 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
-export interface themeType {
-    type: string;
+export interface userLoginType {
+    username: string
+    password: string
 }
 
-const initialState: themeType =
-{
-    type: 'light',
+const initialState = {
+    currentUser: null,
+    loading: false,
+    error: false,
 }
-
 
 export const authSlice = createSlice({
-    name: "theme",
+    name: "authSlice",
     initialState,
     reducers: {
-        toggleTheme: (state, action: PayloadAction<string>) => {
-
-            state.type = action.payload
-            if (state.type === "dark") {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
+        loginStart: (state) => {
+            state.loading = true;
+            state.error = false
+        },
+        loginSuccess: (state, action) => {
+            state.loading = false;
+            state.currentUser = action.payload;
+        },
+        loginFailure: (state, action) => {
+            state.loading = false;
+            state.error = true;
+        },
+        logoutStart: (state) => {
+            state.loading = true;
+            state.error = false
+        },
+        logoutSuccess: (state) => {
+            state.loading = false;
+            localStorage.removeItem("persist:root");
+            state.currentUser = null;
+        },
+        logoutFailure: (state) => {
+            state.loading = false;
+            state.error = true
         },
     },
 });
-export const { toggleTheme } =
+export const { loginStart, loginSuccess, loginFailure, logoutStart, logoutSuccess, logoutFailure } =
     authSlice.actions;
-export const themeSelector = (state: RootState) => state.authReducer;
+export const authSelector = (state: RootState) => state.authReducer;
 export default authSlice.reducer;
