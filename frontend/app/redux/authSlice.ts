@@ -9,16 +9,16 @@ export interface userLoginType {
 const initialState = {
     currentUser: null,
     loading: false,
-    error: false,
+    error: "",
 }
 
 export const authSlice = createSlice({
-    name: "authSlice",
+    name: "user",
     initialState,
     reducers: {
         loginStart: (state) => {
             state.loading = true;
-            state.error = false
+            state.error = ""
         },
         loginSuccess: (state, action) => {
             state.loading = false;
@@ -26,20 +26,20 @@ export const authSlice = createSlice({
         },
         loginFailure: (state, action) => {
             state.loading = false;
-            state.error = true;
+            state.error = action.payload;
         },
         logoutStart: (state) => {
             state.loading = true;
-            state.error = false
+            state.error = ""
         },
         logoutSuccess: (state) => {
             state.loading = false;
             localStorage.removeItem("persist:root");
             state.currentUser = null;
         },
-        logoutFailure: (state) => {
+        logoutFailure: (state, action) => {
             state.loading = false;
-            state.error = true
+            state.error = action.payload
         },
     },
 });

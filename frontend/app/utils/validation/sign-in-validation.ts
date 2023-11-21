@@ -6,7 +6,7 @@ export const validationSchema = z
         username: z.string().min(1, { message: "Username is required" }),
         password: z
             .string()
-            .min(6, { message: "Password must be atleast 6 characters" }),
+            .min(1, { message: "Password is required" }),
     });
 
 

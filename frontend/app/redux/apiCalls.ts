@@ -15,9 +15,13 @@ export const login = async (dispatch: AppDispatch, user: signInInputs) => {
         const res = await publicRequest.post("/accounts/token/", user);
         console.log("Login user", res)
         dispatch(loginSuccess(res.data));
-    } catch (err) {
-        console.log(err)
-        dispatch(loginFailure(err));
+    } catch (err: any) {
+        console.log(err.response.status)
+        let message = 'Network error!'
+        if (err.response.status == 401) {
+            message = "Wrong username or password!"
+        }
+        dispatch(loginFailure(message));
     }
 };
 

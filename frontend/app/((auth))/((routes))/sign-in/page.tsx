@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,12 +16,16 @@ import Image from '@/app/components/Image';
 import Stack from '@mui/material/Stack';
 import { Paper } from '@mui/material';
 import NextLink from 'next/link';
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema, ValidationSchema } from '@/app/utils/validation/sign-in-validation';
 import { signInInputs } from '@/app/utils/types';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hook'
 import { login } from '@/app/redux/apiCalls'
+import CircularProgress from '@mui/material/CircularProgress';
+import SnackBar from '@/app/components/SnackBar';
+import { AlertColor } from '@mui/material/Alert';
+
 
 
 export default function SignIn() {
@@ -33,96 +37,112 @@ export default function SignIn() {
     resolver: zodResolver(validationSchema),
   });
   const dispatch = useAppDispatch()
-  const onSubmit = async (data: signInInputs) => {
-    login(dispatch, data);
-  };
-  return (
-    <Stack
-      component={Paper}
-      elevation={3}
-      direction={{ xs: "column", sm: "column", md: "row" }} spacing={{ xs: 1, sm: 1 }}
-      sx={{
-        alignItems: 'center',
-        borderRadius: 10,
-      }}
-    >
-      <Box sx={{
-        display: { xs: "none", sm: "none", md: "flex" },
-        alignItems: 'center',
-      }}>
-        <Image
-          src='/images/auth/authimg.jpg'
-          height={500}
-          width={600}
-          maxHeight='100%'
-          maxWidth='100%'
+  const error = useAppSelector((state) => state.authReducer.error);
+  const loading = useAppSelector((state) => state.authReducer.loading);
 
-        />
-      </Box>
-      <Box
+
+  const onSubmit = async (data: signInInputs) => {
+    await login(dispatch, data);
+    if (error) {
+      setMessage(error)
+      setOpen(true)
+      setSeverity('error')
+    }
+  };
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState<AlertColor>('info');
+  return (
+    <>
+      <SnackBar open={open} setOpen={setOpen} message={message} severity={severity} />
+      <Stack
+        component={Paper}
+        elevation={3}
+        direction={{ xs: "column", sm: "column", md: "row" }} spacing={{ xs: 1, sm: 1 }}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          padding: 5,
+          borderRadius: 10,
         }}
       >
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate
+        <Box sx={{
+          display: { xs: "none", sm: "none", md: "flex" },
+          alignItems: 'center',
+        }}>
+          <Image
+            src='/images/auth/authimg.jpg'
+            height={500}
+            width={600}
+            maxHeight='100%'
+            maxWidth='100%'
+
+          />
+        </Box>
+        <Box
           sx={{
-            maxHeight: '100%',
-            maxWidth: '100%'
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 5,
           }}
         >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            autoComplete="username"
-            autoFocus
-            error={!!errors['username']}
-            helperText={errors['username'] ? errors['username'].message : ''}
-            {...register('username')}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            error={!!errors['password']}
-            helperText={errors['password'] ? errors['password'].message : ''}
-            {...register('password')}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, background: "#390da0", hover: "#425feb" }}
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate
+            sx={{
+              maxHeight: '100%',
+              maxWidth: '100%'
+            }}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              autoComplete="username"
+              autoFocus
+              error={!!errors['username']}
+              helperText={errors['username'] ? errors['username'].message : ''}
+              {...register('username')}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              error={!!errors['password']}
+              helperText={errors['password'] ? errors['password'].message : ''}
+              {...register('password')}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, background: "#390da0", hover: "#425feb" }}
+              startIcon={loading ? <CircularProgress color="success" /> : ''}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link component={NextLink} href="sign-up" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link component={NextLink} href="sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Stack>
+      </Stack>
+    </>
   )
 }
