@@ -42,11 +42,16 @@ export default function SignIn() {
 
 
   const onSubmit = async (data: signInInputs) => {
+    setOpen(false)
     await login(dispatch, data);
+    setOpen(true)
+    setMessage(error)
+    setSeverity('error')
     if (error) {
-      setMessage(error)
-      setOpen(true)
-      setSeverity('error')
+    } else {
+
+      setMessage("Login successful")
+      setSeverity('success')
     }
   };
   const [open, setOpen] = useState(false);

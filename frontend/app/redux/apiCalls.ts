@@ -9,14 +9,11 @@ import { signInInputs } from "../utils/types";
 import { publicRequest, userRequest, getAuthorizationHeader } from "../utils/requestMethods";
 
 export const login = async (dispatch: AppDispatch, user: signInInputs) => {
-    console.log("user", user)
     dispatch(loginStart());
     try {
         const res = await publicRequest.post("/accounts/token/", user);
-        console.log("Login user", res)
         dispatch(loginSuccess(res.data));
     } catch (err: any) {
-        console.log(err.response.status)
         let message = 'Network error!'
         if (err.response.status == 401) {
             message = "Wrong username or password!"
