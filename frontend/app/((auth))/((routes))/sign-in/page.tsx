@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -37,29 +37,41 @@ export default function SignIn() {
     resolver: zodResolver(validationSchema),
   });
   const dispatch = useAppDispatch()
-  const error = useAppSelector((state) => state.authReducer.error);
-  const loading = useAppSelector((state) => state.authReducer.loading);
+  const { loading, error, currentUser } = useAppSelector((state) => state.authReducer);
 
+  useEffect(() => {
+    const handleSnackBar = () => {
+      if (error) {
+        setMessage(error)
+        setSeverity('error')
+      } else {
+        setMessage("Login successful")
+        setSeverity('success')
+      }
+    }
+    handleSnackBar()
+
+  }, [error])
 
   const onSubmit = async (data: signInInputs) => {
     setOpen(false)
     await login(dispatch, data);
     setOpen(true)
-    setMessage(error)
-    setSeverity('error')
-    if (error) {
-    } else {
-
-      setMessage("Login successful")
-      setSeverity('success')
-    }
   };
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState<AlertColor>('info');
+
   return (
     <>
-      <SnackBar open={open} setOpen={setOpen} message={message} severity={severity} />
+      <SnackBar
+        open={open}
+        setOpen={setOpen}
+        message={message}
+        severity={severity}
+        vertical='top'
+        horizontal='right'
+      />
       <Stack
         component={Paper}
         elevation={3}

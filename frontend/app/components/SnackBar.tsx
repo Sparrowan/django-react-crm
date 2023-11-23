@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import Snackbar from '@mui/material/Snackbar';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps, AlertColor } from '@mui/material/Alert';
 
 
@@ -14,7 +14,9 @@ type propsTypes = {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
     message: String,
-    severity: AlertColor
+    severity: AlertColor,
+    vertical: "top" | "bottom",
+    horizontal: "right" | "left" | "center"
 
 }
 
@@ -26,9 +28,10 @@ export default function SnackBar(props: propsTypes) {
 
         props.setOpen(false);
     };
+    const { vertical, horizontal } = props
 
     return (
-        <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }}>
             <Alert onClose={handleClose} severity={props.severity} sx={{ width: '100%' }}>
                 {props.message}
             </Alert>

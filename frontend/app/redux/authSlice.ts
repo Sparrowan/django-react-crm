@@ -18,11 +18,11 @@ export const authSlice = createSlice({
     reducers: {
         loginStart: (state) => {
             state.loading = true;
-            state.error = ""
         },
         loginSuccess: (state, action) => {
             state.loading = false;
             state.currentUser = action.payload;
+            state.error = ""
         },
         loginFailure: (state, action) => {
             state.loading = false;
