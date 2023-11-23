@@ -141,7 +141,8 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, background: "#390da0", hover: "#425feb" }}
-              startIcon={loading ? <CircularProgress color="success" /> : ''}
+              startIcon={loading ? <CircularProgress color="success" size="2rem" /> : ''}
+              disabled={loading}
             >
               Sign In
             </Button>
