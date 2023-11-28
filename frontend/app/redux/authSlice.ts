@@ -6,16 +6,36 @@ export interface userLoginType {
     password: string
 }
 
+export interface userRegisterType extends userLoginType {
+    email: string
+    first_name?: string
+    last_name?: string
+    confirmPassword: string
+}
+
 const initialState = {
     currentUser: null,
     loading: false,
     error: "",
+    regError: ""
 }
 
 export const authSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        registerStart: (state) => {
+            state.loading = true;
+        },
+        registerSuccess: (state, action) => {
+            state.loading = false;
+            state.error = ""
+        },
+        registerFailure: (state, action) => {
+            state.loading = false;
+            state.regError = action.payload;
+        },
+
         loginStart: (state) => {
             state.loading = true;
         },
@@ -43,7 +63,7 @@ export const authSlice = createSlice({
         },
     },
 });
-export const { loginStart, loginSuccess, loginFailure, logoutStart, logoutSuccess, logoutFailure } =
+export const { registerFailure, registerStart, registerSuccess, loginStart, loginSuccess, loginFailure, logoutStart, logoutSuccess, logoutFailure } =
     authSlice.actions;
 export const authSelector = (state: RootState) => state.authReducer;
 export default authSlice.reducer;

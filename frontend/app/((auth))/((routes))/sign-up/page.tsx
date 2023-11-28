@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema, ValidationSchema } from '@/app/utils/validation/sign-up-validation';
 import { signInInputs } from '@/app/utils/types';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hook'
-import { login } from '@/app/redux/apiCalls'
+import { signUp } from '@/app/redux/apiCalls'
 import CircularProgress from '@mui/material/CircularProgress';
 import SnackBar from '@/app/components/SnackBar';
 import { AlertColor } from '@mui/material/Alert';
@@ -55,7 +55,7 @@ export default function SignUp() {
 
   const onSubmit = async (data: signInInputs) => {
     setOpen(false)
-    await login(dispatch, data);
+    await signUp(dispatch, data);
     setOpen(true)
   };
   const [open, setOpen] = useState(false);
@@ -119,6 +119,18 @@ export default function SignUp() {
               error={!!errors['username']}
               helperText={errors['username'] ? errors['username'].message : ''}
               {...register('username')}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              autoComplete="email"
+              autoFocus
+              error={!!errors['email']}
+              helperText={errors['email'] ? errors['email'].message : ''}
+              {...register('email')}
             />
             <TextField
               margin="normal"

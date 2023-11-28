@@ -1,4 +1,5 @@
 import {
+    registerFailure, registerStart, registerSuccess,
     loginFailure, loginStart, loginSuccess,
     logoutStart, logoutSuccess, logoutFailure
 } from "./authSlice";
@@ -7,6 +8,21 @@ import { signInInputs } from "../utils/types";
 
 
 import { publicRequest, userRequest, getAuthorizationHeader } from "../utils/requestMethods";
+
+export const signUp = async (dispatch: AppDispatch, user: signInInputs) => {
+    dispatch(registerStart());
+    try {
+        const res = await publicRequest.post("/accounts/register/", user);
+        dispatch(registerSuccess(res.data));
+    } catch (err: any) {
+        console.log('err', err)
+        let message = 'Network error!'
+        if (err.response.status == 400) {
+            message = "Wrong username or password!"
+        }
+        dispatch(registerFailure(message));
+    }
+};
 
 export const login = async (dispatch: AppDispatch, user: signInInputs) => {
     dispatch(loginStart());
