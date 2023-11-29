@@ -25,6 +25,7 @@ import { signUp } from '@/app/redux/apiCalls'
 import CircularProgress from '@mui/material/CircularProgress';
 import SnackBar from '@/app/components/SnackBar';
 import { AlertColor } from '@mui/material/Alert';
+import { resetRegisteredUser } from '@/app/redux/authSlice'
 
 
 
@@ -32,35 +33,62 @@ export default function SignUp() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
   const dispatch = useAppDispatch()
-  const { loading, error, currentUser } = useAppSelector((state) => state.authReducer);
-
+  const { loading, error, registeredUser } = useAppSelector((state) => state.authReducer);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState<AlertColor>('info');
   useEffect(() => {
+    dispatch(resetRegisteredUser())
     const handleSnackBar = () => {
       if (error) {
-        setMessage(error)
-        setSeverity('error')
-      } else {
-        setMessage("Login successful")
+        if (error.username) {
+          setError("username", {
+            type: "server",
+            message: error.username[0]
+          })
+        } else if (error.email) {
+          setError("email", {
+            type: "server",
+            message: error.email[0]
+          })
+        } else if (error.password) {
+          setError("password", {
+            type: "server",
+            message: error.password[0]
+          })
+        } else if (error.password2) {
+          setError("password2", {
+            type: "server",
+            message: error.password2[0]
+          })
+        } else {
+          console.log("Here")
+          setMessage("Network Error!")
+          setSeverity('error')
+          setOpen(true)
+        }
+      } else if (registeredUser) {
+        setMessage("Registration successful")
         setSeverity('success')
+        setOpen(true)
       }
     }
     handleSnackBar()
 
-  }, [error])
+  }, [error, registeredUser])
+
 
   const onSubmit = async (data: signInInputs) => {
     setOpen(false)
     await signUp(dispatch, data);
-    setOpen(true)
   };
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState<AlertColor>('info');
+
 
   return (
     <>
@@ -150,11 +178,11 @@ export default function SignUp() {
               fullWidth
               label="Confirm Password"
               type="password"
-              id="confirmPassword"
+              id="password2"
               autoComplete="current-password"
-              error={!!errors['confirmPassword']}
-              helperText={errors['confirmPassword'] ? errors['confirmPassword'].message : ''}
-              {...register('confirmPassword')}
+              error={!!errors['password2']}
+              helperText={errors['password2'] ? errors['password2'].message : ''}
+              {...register('password2')}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

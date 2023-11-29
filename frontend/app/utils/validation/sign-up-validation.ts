@@ -9,11 +9,11 @@ export const validationSchema = z
         password: z
             .string()
             .min(8, { message: "Password should have a minimum of 8 characters!" }),
-        confirmPassword: z
+        password2: z
             .string()
             .min(8, { message: "Confirmation password should have a minimum of 8 characters!" }),
-    }).refine((data) => data.password === data.confirmPassword, {
-        path: ['confirmPassword'],
+    }).refine((data) => data.password === data.password2, {
+        path: ['password2'],
         message: 'Password and confirmation passwords do not match',
     });
 

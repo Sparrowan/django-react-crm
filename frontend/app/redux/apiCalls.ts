@@ -15,14 +15,10 @@ export const signUp = async (dispatch: AppDispatch, user: signInInputs) => {
         const res = await publicRequest.post("/accounts/register/", user);
         dispatch(registerSuccess(res.data));
     } catch (err: any) {
-        console.log('err', err)
-        let message = 'Network error!'
-        if (err.response.status == 400) {
-            message = "Wrong username or password!"
-        }
-        dispatch(registerFailure(message));
+        dispatch(registerFailure(err.response.data));
     }
 };
+
 
 export const login = async (dispatch: AppDispatch, user: signInInputs) => {
     dispatch(loginStart());
