@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation'
 
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-    const { loading, error, currentUser } = useAppSelector((state) => state.authReducer);
+    const { currentUser } = useAppSelector((state) => state.authReducer);
     if (currentUser) {
         return redirect('/dashboard')
 
