@@ -13,14 +13,22 @@ export interface userRegisterType extends userLoginType {
     password2: string
 }
 
+interface currentUser {
+    access: string,
+    refresh: string
+}
+
 interface initialState {
-    currentUser: null | {}
+    currentUser: currentUser | null
     loading: boolean
     error: any
     registeredUser: any
 }
+const user = localStorage.getItem('currentUser')
+    ? localStorage.getItem('currentUser')
+    : null
 const initialState: initialState = {
-    currentUser: null,
+    currentUser: user ? JSON.parse(user) : null,
     loading: false,
     error: "",
     registeredUser: null
@@ -51,6 +59,7 @@ export const authSlice = createSlice({
         },
         loginSuccess: (state, action) => {
             state.loading = false;
+            localStorage.setItem("currentUser", JSON.stringify(action.payload));
             state.currentUser = action.payload;
             state.error = ""
         },
@@ -64,7 +73,7 @@ export const authSlice = createSlice({
         },
         logoutSuccess: (state) => {
             state.loading = false;
-            localStorage.removeItem("persist:root");
+            localStorage.removeItem("currentUser");
             state.currentUser = null;
         },
         logoutFailure: (state, action) => {
