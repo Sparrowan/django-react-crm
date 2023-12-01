@@ -1,3 +1,5 @@
+'use client'
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
@@ -24,9 +26,13 @@ interface initialState {
     error: any
     registeredUser: any
 }
-const user = localStorage.getItem('currentUser')
-    ? localStorage.getItem('currentUser')
-    : null
+let user = null
+
+if (typeof window !== 'undefined') {
+    user = localStorage.getItem('currentUser')
+        ? localStorage.getItem('currentUser')
+        : null
+}
 const initialState: initialState = {
     currentUser: user ? JSON.parse(user) : null,
     loading: false,

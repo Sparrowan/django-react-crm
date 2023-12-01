@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hook'
@@ -11,10 +11,12 @@ import { redirect } from 'next/navigation'
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     const { currentUser } = useAppSelector((state) => state.authReducer);
-    if (currentUser) {
-        return redirect('/dashboard')
+    useEffect(() => {    
+        if (currentUser) {
+            return redirect('/dashboard')
+        }
+    }, [])
 
-    }
     return (
         <Box
             component={Paper}

@@ -7,6 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Avatar, Box, ButtonBase } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import {commonAvatar, mediumAvatar} from '../../theme/themes/avatars'
+
+
 
 
 
@@ -39,7 +44,11 @@ type propsTypes = {
     drawerwidth: number
 }
 
+
+
 const Navbar = (props: propsTypes) => {
+    const theme = useTheme();
+
     return (
         <AppBar position="absolute" open={props.open} drawerwidth={props.drawerwidth}>
             <Toolbar
@@ -59,6 +68,26 @@ const Navbar = (props: propsTypes) => {
                 >
                     <MenuIcon />
                 </IconButton>
+                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{
+                            ...commonAvatar,
+                            ...mediumAvatar,
+                            transition: 'all .2s ease-in-out',
+                            background: theme.palette.secondary.light,
+                            color: theme.palette.secondary.dark,
+                            '&:hover': {
+                                background: theme.palette.secondary.dark,
+                                color: theme.palette.secondary.light
+                            }
+                        }}
+                        onClick={props.toggleDrawer}
+                        color="inherit"
+                    >
+                        <MenuIcon />
+                    </Avatar>
+                </ButtonBase>
                 <Typography
                     component="h1"
                     variant="h6"
