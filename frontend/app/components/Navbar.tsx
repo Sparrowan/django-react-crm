@@ -9,7 +9,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Box, ButtonBase } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import {commonAvatar, mediumAvatar} from '../../theme/themes/avatars'
+import { commonAvatar, mediumAvatar } from '../../theme/themes/avatars'
+import SearchSection from './SearchSection';
+import NotificationSection from './NotificationSection';
 
 
 
@@ -36,6 +38,8 @@ const AppBar = styled(MuiAppBar, {
             duration: theme.transitions.duration.enteringScreen,
         }),
     }),
+    background: '#ffffff',
+    border: 'none',
 }));
 
 type propsTypes = {
@@ -64,44 +68,22 @@ const Navbar = (props: propsTypes) => {
                     sx={{
                         marginRight: '36px',
                         ...(props.open && { display: 'none' }),
+                        ...commonAvatar,
+                        ...mediumAvatar,
+                        transition: 'all .2s ease-in-out',
+                        background: theme.palette.secondary.light,
+                        color: theme.palette.secondary.dark,
+                        '&:hover': {
+                            background: theme.palette.secondary.dark,
+                            color: theme.palette.secondary.light
+                        }
                     }}
                 >
                     <MenuIcon />
+
                 </IconButton>
-                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            ...commonAvatar,
-                            ...mediumAvatar,
-                            transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
-                            color: theme.palette.secondary.dark,
-                            '&:hover': {
-                                background: theme.palette.secondary.dark,
-                                color: theme.palette.secondary.light
-                            }
-                        }}
-                        onClick={props.toggleDrawer}
-                        color="inherit"
-                    >
-                        <MenuIcon />
-                    </Avatar>
-                </ButtonBase>
-                <Typography
-                    component="h1"
-                    variant="h6"
-                    color="inherit"
-                    noWrap
-                    sx={{ flexGrow: 1 }}
-                >
-                    Dashboard
-                </Typography>
-                <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
+                <SearchSection />
+                <NotificationSection />
             </Toolbar>
         </AppBar>
     )

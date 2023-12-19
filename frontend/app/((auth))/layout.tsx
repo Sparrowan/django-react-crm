@@ -15,7 +15,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         if (currentUser) {
             return redirect('/dashboard')
         }
-    }, [])
+    }, [currentUser])
 
     return (
         <Box

@@ -3,7 +3,7 @@
  * @param {JsonObject} theme Theme customization object
  */
 
-export default function themePalette(theme:any) {
+export default function themePalette(theme: any) {
     return {
         mode: theme?.customization?.navType,
         common: {
@@ -13,9 +13,9 @@ export default function themePalette(theme:any) {
             light: theme.colors?.primaryLight,
             main: theme.colors?.primaryMain,
             dark: theme.colors?.primaryDark,
-            200: theme.colors?.primary200,
             800: theme.colors?.primary800
         },
+        primary200: theme.colors?.primary200,
         secondary: {
             light: theme.colors?.secondaryLight,
             main: theme.colors?.secondaryMain,

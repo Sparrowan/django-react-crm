@@ -1,4 +1,29 @@
-import { createTheme, Theme } from '@mui/material/styles';
+declare module "@mui/material/styles" {
+    interface PaletteOptions {
+        orange: {
+            light?: string;
+            main: string;
+            dark?: string;
+        };
+        primary?: PaletteColorOptions;
+
+    }
+
+    interface Palette {
+        orange: {
+            light?: string;
+            main: string;
+            dark?: string;
+        };
+        primary200?: string;
+    }
+}
+
+
+
+
+
+import { createTheme, PaletteColorOptions, Theme } from '@mui/material/styles';
 
 // assets
 import colors from './assets/scss/_themes-vars.module.scss';
@@ -14,6 +39,9 @@ import { ThemeOptions, Direction } from '@mui/material/styles';
  * Represent theme style and structure as per Material-UI
  * @param {JsonObject} customization customization parameter object
  */
+// Augmenting the PaletteOptions interface from Material-UI
+
+
 
 export const theme = (customization: any) => {
     const color = colors;
